@@ -6,6 +6,7 @@ import httpStatus from "http-status";
 import router from "./app/module/routes";
 import cookieParser from "cookie-parser";
 import { IErrorPayload } from "./shared/globalInterfaces";
+import globalError from "./app/middleware/globalError";
 
 const app: Application = express();
 
@@ -15,13 +16,18 @@ app.use(express.urlencoded({ extended: true }));
 app.use(morgan("tiny"));
 app.use(cookieParser());
 
-// main routing
-app.use("/api/v1", router);
 
 // home route
 app.get("/", (req: Request, res: Response) =>
   sendRes(res, httpStatus.OK, { success: true, message: "Welcome to server" })
 );
+
+// main routing
+app.use("/api/v1", router);
+
+
+//global error handler
+app.use(globalError);
 
 // routes not found
 app.use((req: Request, res: Response) => {
@@ -39,3 +45,4 @@ app.use((req: Request, res: Response) => {
 });
 
 export default app;
+

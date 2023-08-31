@@ -7,7 +7,7 @@ import { Server } from "http";
 let server: Server;
 
 process.on("uncaughtException", (error) => {
-  console.log("uncaughtException: " + error.message);
+  errorLog("uncaughtException: " + error.message);
   process.exit(1);
 });
 
@@ -25,7 +25,7 @@ const bootFunction = async () => {
     if (server) {
       server.close(() => {
         errorLog("unhandledRejection");
-        console.log(error);
+        errorLog(error as string);
         process.exit(1);
       });
     }
@@ -35,8 +35,9 @@ const bootFunction = async () => {
 bootFunction();
 
 process.on("SIGALRM", () => {
-  console.log("SIGTERM is received");
+  errorLog("SIGTERM is received");
   if (server) {
     server.close();
   }
 });
+

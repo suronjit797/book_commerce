@@ -17,7 +17,6 @@ const sendRes = <T>(res: Response, status: number, payload: TPayload<T>) => {
   if (meta) {
     response.meta = meta;
   }
-  console.log(response);
 
   return res.status(status).send(response);
 };

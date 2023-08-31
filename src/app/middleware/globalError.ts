@@ -6,9 +6,10 @@ import { errorLog } from "../../shared/logger";
 import { Prisma } from "@prisma/client";
 import handleValidationError from "../errorHandler/handleValidationError";
 import handleClientError from "../errorHandler/handleClientError";
+import { ZodError } from "zod";
 
 // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
-const globalError: ErrorRequestHandler = (error, req, res) => {
+const globalError: ErrorRequestHandler = (error, req, res, next) => {
   let status: number = error.statusCode || 500;
   let message: string = error.message || "Internal server error occurred";
   let errorMessages: IErrorMessages[] = [
@@ -18,7 +19,7 @@ const globalError: ErrorRequestHandler = (error, req, res) => {
     },
   ];
 
-  if (error?.name === "ZodError") {
+  if (error instanceof ZodError) {
     const result = zodErrorHandler(error);
     status = result.statusCode || 500;
     message = result.message;
