@@ -3,7 +3,8 @@ import * as controller from "./users.controller";
 
 const userRouter = express.Router();
 
-userRouter.get("/",  controller.createUser);
-
+userRouter.get("/", controller.getAllUser);
+userRouter.get("/:id", controller.getSingleUser);
+userRouter.patch("/:id", controller.updateUser);
 
 export default userRouter;
