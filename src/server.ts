@@ -16,7 +16,6 @@ const bootFunction = async () => {
     server = app.listen(config.port, () => {
       successLog("Server is listening on port: " + config.port);
       successLog(`http://localhost:` + config.port);
-      // successLog(config.db_uri);
     });
   } catch (error) {
     errorLog(error as string);

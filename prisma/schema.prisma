@@ -9,3 +9,94 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+enum Role {
+  USER
+  ADMIN
+}
+
+model User {
+  id               String            @id @default(uuid())
+  name             String
+  email            String            @unique
+  password         String
+  role             Role              @default(USER)
+  contactNo        String
+  address          String
+  profileImg       String
+  createdAt        DateTime          @default(now())
+  updatedAt        DateTime          @updatedAt
+  reviewAndRatings ReviewAndRating[]
+  orders           Order[]
+
+  @@map("users")
+}
+
+model Category {
+  id        String   @id @default(uuid())
+  title     String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  books     Book[]
+
+  @@map("categories")
+}
+
+model Book {
+  id               String            @id @default(uuid())
+  title            String
+  author           String
+  price            Float
+  genre            String
+  publicationDate  DateTime
+  categoryId       String
+  category         Category          @relation(fields: [categoryId], references: [id])
+  createdAt        DateTime          @default(now())
+  updatedAt        DateTime          @updatedAt
+  reviewAndRatings ReviewAndRating[]
+
+  @@map("books")
+}
+
+model ReviewAndRating {
+  id     String @id @default(uuid())
+  review String
+  rating Int    @default(0)
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id])
+  bookId String
+  book   Book   @relation(fields: [bookId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("reviews_and_ratings")
+}
+
+model Order {
+  id           String        @id @default(uuid())
+  review       String
+  rating       Int           @default(0)
+  userId       String
+  user         User          @relation(fields: [userId], references: [id])
+  orderedBooks OrderedBook[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("orders")
+}
+
+model OrderedBook {
+  id       String @id @default(uuid())
+  quantity Int    @default(1)
+  bookId   String
+  orderId  String
+  order    Order  @relation(fields: [orderId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("ordered_books")
+}
