@@ -3,6 +3,9 @@ import { IErrorMessages, IErrorPayload } from "../../shared/globalInterfaces";
 import config from "../../config";
 import zodErrorHandler from "../errorHandler/zodErrorHandler";
 import { errorLog } from "../../shared/logger";
+import { Prisma } from "@prisma/client";
+import handleValidationError from "../errorHandler/handleValidationError";
+import handleClientError from "../errorHandler/handleClientError";
 
 // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
 const globalError: ErrorRequestHandler = (error, req, res) => {
@@ -15,17 +18,21 @@ const globalError: ErrorRequestHandler = (error, req, res) => {
     },
   ];
 
-  switch (error?.name) {
-    case "ZodError": {
-      const result = zodErrorHandler(error);
-      status = result.statusCode || 500;
-      message = result.message;
-      errorMessages = result.errorMessages;
-      break;
-    }
-
-    default:
-      break;
+  if (error?.name === "ZodError") {
+    const result = zodErrorHandler(error);
+    status = result.statusCode || 500;
+    message = result.message;
+    errorMessages = result.errorMessages;
+  } else if (error instanceof Prisma.PrismaClientValidationError) {
+    const simplifiedError = handleValidationError(error);
+    status = simplifiedError.statusCode || 400;
+    message = simplifiedError.message;
+    errorMessages = simplifiedError.errorMessages;
+  } else if (error instanceof Prisma.PrismaClientKnownRequestError) {
+    const simplifiedError = handleClientError(error);
+    status = simplifiedError.statusCode || 400;
+    message = simplifiedError.message;
+    errorMessages = simplifiedError.errorMessages;
   }
 
   const errorPayload: IErrorPayload = {
