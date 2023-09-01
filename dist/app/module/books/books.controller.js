@@ -35,7 +35,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.removeBook = exports.updateBook = exports.getBook = exports.getAllBook = exports.createBook = void 0;
+exports.removeBook = exports.updateBook = exports.getBookByCategory = exports.getBook = exports.getAllBook = exports.createBook = void 0;
 const service = __importStar(require("./books.service"));
 const sendRes_1 = __importDefault(require("../../../shared/sendRes"));
 const http_status_1 = __importDefault(require("http-status"));
@@ -100,6 +100,21 @@ const getBook = (req, res, next) => __awaiter(void 0, void 0, void 0, function* 
     }
 });
 exports.getBook = getBook;
+const getBookByCategory = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const data = yield service.getBookByCategoryService(req.params.categoryId);
+        return (0, sendRes_1.default)(res, http_status_1.default.CREATED, {
+            success: true,
+            message: "Book Fetched Successfully",
+            data,
+        });
+    }
+    catch (error) {
+        console.log(error);
+        next(error);
+    }
+});
+exports.getBookByCategory = getBookByCategory;
 const updateBook = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const data = yield service.updateBookService(req.params.id, req.body);

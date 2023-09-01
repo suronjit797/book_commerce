@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.removeBookService = exports.updateBookService = exports.getBookService = exports.getAllBookService = exports.createBookService = void 0;
+exports.removeBookService = exports.updateBookService = exports.getBookByCategoryService = exports.getBookService = exports.getAllBookService = exports.createBookService = void 0;
 const prisma_1 = __importDefault(require("../../../shared/prisma"));
 const createBookService = (data) => __awaiter(void 0, void 0, void 0, function* () {
     return yield prisma_1.default.book.create({ data });
@@ -33,7 +33,7 @@ const getAllBookService = (pagination, whereConditions) => __awaiter(void 0, voi
         size,
         page,
         total,
-        totalPage: Math.ceil(total / size)
+        totalPage: Math.ceil(total / size),
     };
     return { meta, data };
 });
@@ -42,6 +42,10 @@ const getBookService = (id) => __awaiter(void 0, void 0, void 0, function* () {
     return yield prisma_1.default.book.findUnique({ where: { id } });
 });
 exports.getBookService = getBookService;
+const getBookByCategoryService = (categoryId) => __awaiter(void 0, void 0, void 0, function* () {
+    return yield prisma_1.default.book.findMany({ where: { categoryId } });
+});
+exports.getBookByCategoryService = getBookByCategoryService;
 const updateBookService = (id, data) => __awaiter(void 0, void 0, void 0, function* () {
     return yield prisma_1.default.book.update({ where: { id }, data });
 });

@@ -35,6 +35,7 @@ const globalConstant_1 = require("../../../shared/globalConstant");
 const booksRouter = express_1.default.Router();
 booksRouter.get("/", controller.getAllBook);
 booksRouter.get("/:id", controller.getBook);
+booksRouter.get("/:categoryId/category", controller.getBookByCategory);
 booksRouter.delete("/:id", (0, auth_1.auth)(globalConstant_1.userRole.admin), controller.removeBook);
 booksRouter.patch("/:id", (0, globalValidation_1.default)(books_validation_1.updateValidation), (0, auth_1.auth)(globalConstant_1.userRole.admin), controller.updateBook);
 booksRouter.post("/create-book", (0, globalValidation_1.default)(books_validation_1.bookValidation), (0, auth_1.auth)(globalConstant_1.userRole.admin), controller.createBook);
