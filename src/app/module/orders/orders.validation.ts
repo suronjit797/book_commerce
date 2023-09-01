@@ -1,13 +1,12 @@
 import { z } from "zod";
 
-export const bookValidation = z.object({
+export const orderValidation = z.object({
   body: z.object({
-    title: z.string({ required_error: "title is required" }),
-    author: z.string({ required_error: "author is required" }),
-    price: z.number({ required_error: "price is required" }),
-    genre: z.string({ required_error: "genre is required" }),
-    publicationDate: z.string({ required_error: "publicationDate is required" }),
-    categoryId: z.string({ required_error: "categoryId is required" }),
+    orderedBooks: z.array(
+      z.object({
+        bookId: z.string({ required_error: "bookId is required" }),
+        quantity: z.number({ required_error: "quantity is required" }),
+      })
+    ),
   }),
 });
-
