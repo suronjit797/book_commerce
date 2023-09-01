@@ -44,3 +44,15 @@ export const updateUser: RequestHandler = async (req, res, next) => {
     next(error);
   }
 };
+export const removeUser: RequestHandler = async (req, res, next) => {
+  try {
+    const data = await service.removeUserService(req.params.id);
+
+    sendRes(res, httpStatus.OK, {
+      success: true,
+      message: "User Deleted Successfully",
+    });
+  } catch (error) {
+    next(error);
+  }
+};

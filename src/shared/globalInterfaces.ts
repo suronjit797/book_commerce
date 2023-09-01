@@ -42,9 +42,8 @@ export type ILogin = {
 }
 
 export interface CustomJwtPayload {
-  _id?: string
+  id?: string
   role?: string
-  phoneNumber?: string
   iat?: string
   exp?: string
 }

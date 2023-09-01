@@ -20,3 +20,25 @@ export const createUser: RequestHandler = async (req, res, next) => {
     next(error);
   }
 };
+
+export const loginController: RequestHandler = async (req, res, next) => {
+  try {
+    const { accessToken, refreshToken } = await service.loginService(req.body);
+
+    const cookieOptions = {
+      secure: config.NODE_ENV === "production",
+      httpOnly: true,
+      maxAge: 365 * 24 * 60 * 60 * 1000,
+    };
+
+    res.cookie("refreshToken", refreshToken, cookieOptions);
+
+    return sendRes(res, httpStatus.OK, {
+      success: true,
+      message: "User Login Successfully",
+      data: { accessToken },
+    });
+  } catch (error) {
+    return next(error);
+  }
+};

@@ -12,3 +12,10 @@ export const createUserValidation = z.object({
     profileImg: z.string({ required_error: "profileImg is required" }),
   }),
 });
+
+export const loginUserValidation = z.object({
+  body: z.object({
+    email: z.string().email(),
+    password: z.string(),
+  }),
+})
