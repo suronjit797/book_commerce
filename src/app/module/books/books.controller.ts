@@ -70,6 +70,20 @@ export const getBook: RequestHandler = async (req, res, next) => {
     next(error);
   }
 };
+export const getBookByCategory: RequestHandler = async (req, res, next) => {
+  try {
+    const data = await service.getBookByCategoryService(req.params.categoryId);
+
+    return sendRes(res, httpStatus.CREATED, {
+      success: true,
+      message: "Book Fetched Successfully",
+      data,
+    });
+  } catch (error) {
+    console.log(error);
+    next(error);
+  }
+};
 
 export const updateBook: RequestHandler = async (req, res, next) => {
   try {

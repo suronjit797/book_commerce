@@ -9,6 +9,7 @@ const booksRouter = express.Router();
 
 booksRouter.get("/", controller.getAllBook);
 booksRouter.get("/:id", controller.getBook);
+booksRouter.get("/:categoryId/category", controller.getBookByCategory);
 booksRouter.delete("/:id", auth(userRole.admin), controller.removeBook);
 
 booksRouter.patch(

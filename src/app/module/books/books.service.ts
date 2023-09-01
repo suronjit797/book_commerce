@@ -25,13 +25,16 @@ export const getAllBookService = async (
     size,
     page,
     total,
-    totalPage: Math.ceil(total / size)
+    totalPage: Math.ceil(total / size),
   };
 
   return { meta, data };
 };
 export const getBookService = async (id: string): Promise<Book | null> => {
   return await prisma.book.findUnique({ where: { id } });
+};
+export const getBookByCategoryService = async (categoryId: string): Promise<Book[]> => {
+  return await prisma.book.findMany({ where: { categoryId } });
 };
 
 export const updateBookService = async (id: string, data: Partial<Book>): Promise<Book | null> => {
