@@ -23,7 +23,7 @@ export const loginService = async (payload: User) => {
   if (!isExist) {
     throw new ApiError(httpStatus.BAD_REQUEST, "User and Password dose not matched");
   }
-  const { id, password, email, name } = isExist;
+  const { id, password, email, name, role } = isExist;
 
   // if no password
   if (!password) throw new ApiError(httpStatus.FORBIDDEN, "Server error occurred");
@@ -34,10 +34,10 @@ export const loginService = async (payload: User) => {
 
   if (!isVerified) throw new ApiError(httpStatus.BAD_REQUEST, "User and Password dose not matched");
 
-  const accessToken = jwt.sign({ id, email, name }, config.token.access_token_secret, {
+  const accessToken = jwt.sign({ id, email, name, role }, config.token.access_token_secret, {
     expiresIn: config.token.access_token_time,
   });
-  const refreshToken = jwt.sign({ id, email, name }, config.token.refresh_token_secret, {
+  const refreshToken = jwt.sign({ id, email, name, role }, config.token.refresh_token_secret, {
     expiresIn: config.token.refresh_token_time,
   });
 

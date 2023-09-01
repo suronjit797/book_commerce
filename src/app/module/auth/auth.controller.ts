@@ -36,7 +36,7 @@ export const loginController: RequestHandler = async (req, res, next) => {
     return sendRes(res, httpStatus.OK, {
       success: true,
       message: "User Login Successfully",
-      data: { accessToken },
+      data: { token: accessToken },
     });
   } catch (error) {
     return next(error);
