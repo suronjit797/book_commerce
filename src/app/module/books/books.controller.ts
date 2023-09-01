@@ -2,6 +2,8 @@ import { RequestHandler } from "express";
 import * as service from "./books.service";
 import sendRes from "../../../shared/sendRes";
 import httpStatus from "http-status";
+import filterHelper from "../../../helper/filterHelper";
+import { paginationHelper } from "../../../helper/paginationHelper";
 
 export const createBook: RequestHandler = async (req, res, next) => {
   try {
@@ -13,22 +15,43 @@ export const createBook: RequestHandler = async (req, res, next) => {
       data,
     });
   } catch (error) {
-    console.log(error)
+    console.log(error);
     next(error);
   }
 };
 
 export const getAllBook: RequestHandler = async (req, res, next) => {
   try {
-    const data = await service.getAllBookService();
+    const filter = await filterHelper(
+      req,
+      [
+        "search",
+        "minPrice",
+        "maxPrice",
+        "category",
+        "title",
+        "author",
+        "genre",
+        "categoryId",
+      ],
+      ["title", "author", "genre"]
+    );
+
+    console.log(filter);
+    
+
+    const pagination = paginationHelper(req.query);
+    const result = await service.getAllBookService(pagination, filter);
 
     return sendRes(res, httpStatus.CREATED, {
       success: true,
       message: "Book Fetched Successfully",
-      data,
+      meta: result.meta,
+      data: result.data,
+      // data: filter
     });
   } catch (error) {
-    console.log(error)
+    console.log(error);
     next(error);
   }
 };
@@ -43,7 +66,7 @@ export const getBook: RequestHandler = async (req, res, next) => {
       data,
     });
   } catch (error) {
-    console.log(error)
+    console.log(error);
     next(error);
   }
 };
@@ -58,7 +81,7 @@ export const updateBook: RequestHandler = async (req, res, next) => {
       data,
     });
   } catch (error) {
-    console.log(error)
+    console.log(error);
     next(error);
   }
 };
@@ -73,7 +96,7 @@ export const removeBook: RequestHandler = async (req, res, next) => {
       data,
     });
   } catch (error) {
-    console.log(error)
+    console.log(error);
     next(error);
   }
 };

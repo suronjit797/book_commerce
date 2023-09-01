@@ -11,33 +11,21 @@ export type IErrorPayload = {
   statusCode?: number;
 };
 
-export type IResponsePayload<T> = {
-  statusCode: number;
-  success: boolean;
-  data: T | null;
-  message?: string;
-  meta?: {
-    page: number;
-    limit: number;
-    total: number;
-  };
+export type IMeta = {
+  total: number;
+  size: number;
+  page: number;
+  totalPage: number;
 };
 
 export type IPagination = {
   page: number;
-  limit: number;
+  size: number;
   skip: number;
-  // sortCondition: ISortCondition
+  sortCondition: ISortCondition;
 };
-
-export type IFilter = { [key: string]: object };
 
 export type IPartialSearchableFields = string[];
-
-export type ILogin = {
-  accessToken: string;
-  refreshToken: string;
-};
 
 export interface CustomJwtPayload {
   id?: string;
@@ -46,3 +34,5 @@ export interface CustomJwtPayload {
   iat?: string;
   exp?: string;
 }
+
+export type ISortCondition = { [key: string]: string | number };

@@ -1,14 +1,11 @@
 import { Response } from "express";
+import { IMeta } from "./globalInterfaces";
 
 type TPayload<T> = {
   success: boolean;
   message: string;
   data?: T;
-  meta?: {
-    total: number;
-    limit: number;
-    page: number;
-  };
+  meta?: IMeta;
 };
 
 const sendRes = <T>(res: Response, status: number, payload: TPayload<T>) => {
