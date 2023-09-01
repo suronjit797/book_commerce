@@ -45,3 +45,31 @@ export const getSingleCategory: RequestHandler = async (req, res, next) => {
     next(error);
   }
 };
+
+export const updateCategory: RequestHandler = async (req, res, next) => {
+  try {
+    const data = await service.updateCategoryService(req.params.id, req.body);
+
+    return sendRes(res, httpStatus.OK, {
+      success: true,
+      message: "Category updated successfully",
+      data,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const removeCategory: RequestHandler = async (req, res, next) => {
+  try {
+    const data = await service.removeCategoryService(req.params.id);
+
+    return sendRes(res, httpStatus.OK, {
+      success: true,
+      message: "Category removed successfully",
+      data,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
