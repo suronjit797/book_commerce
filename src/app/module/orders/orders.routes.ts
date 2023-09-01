@@ -7,8 +7,8 @@ import { userRole } from "../../../shared/globalConstant";
 
 const ordersRouter = express.Router();
 
-ordersRouter.get("/", controller.getAllOrders);
-ordersRouter.get("/:id",  auth(userRole.customer, userRole.admin), controller.getOrder);
+ordersRouter.get("/", auth(userRole.customer, userRole.admin), controller.getAllOrders);
+ordersRouter.get("/:id", auth(userRole.customer, userRole.admin), controller.getOrder);
 
 ordersRouter.post(
   "/create-order",

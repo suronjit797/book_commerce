@@ -34,7 +34,23 @@ export const createOrderService = async (
   });
 };
 
-export const getAllOrdersService = async (): Promise<any> => {
+export const getAllOrdersService = async (
+  user: CustomJwtPayload | JwtPayload
+): Promise<Order[]> => {
+  if (user?.role === userRole.customer) {
+    return await prisma.order.findMany({
+      where: { userId: user.id },
+      include: {
+        orderedBooks: {
+          select: {
+            bookId: true,
+            quantity: true,
+          },
+        },
+      },
+    });
+  }
+
   return await prisma.order.findMany({
     include: {
       orderedBooks: {
@@ -50,7 +66,7 @@ export const getAllOrdersService = async (): Promise<any> => {
 export const getOrderService = async (
   id: string,
   user: CustomJwtPayload | JwtPayload
-): Promise<any> => {
+): Promise<Order | null> => {
   const data = await prisma.order.findUnique({
     where: { id },
     include: {

@@ -20,7 +20,7 @@ export const createOrder: RequestHandler = async (req, res, next) => {
 
 export const getAllOrders: RequestHandler = async (req, res, next) => {
   try {
-    const data = await service.getAllOrdersService();
+    const data = await service.getAllOrdersService(req.user);
 
     return sendRes(res, httpStatus.CREATED, {
       success: true,
