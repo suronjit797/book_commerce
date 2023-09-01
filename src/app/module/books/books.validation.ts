@@ -10,3 +10,14 @@ export const bookValidation = z.object({
     categoryId: z.string({ required_error: "categoryId is required" }),
   }),
 });
+
+export const updateValidation = z.object({
+  body: z.object({
+    title: z.string().optional(),
+    author: z.string().optional(),
+    price: z.number().optional(),
+    genre: z.string().optional(),
+    publicationDate: z.string().optional(),
+    categoryId: z.string().optional(),
+  }),
+});
