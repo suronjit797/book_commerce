@@ -64,11 +64,11 @@ model ReviewAndRating {
 
 model Order {
   id           String        @id @default(uuid())
-  userId       String
-  createdAt    DateTime      @default(now())
   status       OrderEnum
-  orderedBooks OrderedBook[]
+  userId       String
   user         User          @relation(fields: [userId], references: [id])
+  orderedBooks OrderedBook[]
+  createdAt    DateTime      @default(now())
 
   @@map("orders")
 }
